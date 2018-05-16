@@ -1,5 +1,7 @@
 			/* Agregamos el contructor for */
-			/* Agregamos clausulas del for con sus valores*/
+			/* Agregamos clausulas del for con sus valores
+				clausula schedule(dymadic, chuck)*/
+
 #include <omp.h>
 #include <stdio.h>
 
@@ -32,8 +34,8 @@ int main(int argc, char const *argv[])
 	#pragma omp parallel private(i)
 	{
 		/* Inicio del constructor for */
-		/* Agregamos la claula schedule(static)*/
-		#pragma omp for schedule(static, chuk)
+		/* Agregamos la claula schedule(dynamic)*/
+		#pragma omp for schedule(static, chuk) ordered 
 			for (i = 0; i < tamArray; ++i)
 			{
 
@@ -42,7 +44,6 @@ int main(int argc, char const *argv[])
 			}
 		/* Fin de la seccion for*/
 	}/* Fin de la seccion en paralelo*/
-
 	/* Verificar los resultados*/
 	printf("La suma de los arreglos es:\n");
 	imprimirArray(c, tamArray);
@@ -50,11 +51,14 @@ int main(int argc, char const *argv[])
 
 	return 0;
 }
-/* En este ejemplo la clausula schedule(static, chuck) 
-	divide las interaciones del for y añadiendo a los hilos estaticamente, 
+/* En este ejemplo la clausula schedule(dynamic, chuck) 
+	divide las interaciones del for y añadiendo a los hilos dinamicamente, 
 	donde para cada proceso le corresponde chuck interaciones, los 
 	interaciones sin asignar son realizadas por el thread maestro (0)
 */
+
+/*La clausula ordered especifica que las interaciones del loop deben
+	ser ejecutadas secuencialmente */
 
 void imprimirArray(int a[], int tam)
 {
